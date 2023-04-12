@@ -9,7 +9,11 @@ LOCAL_HEADER_LIBRARIES += vendor_common_inc
 LOCAL_SRC_FILES := wcnss_service.c
 LOCAL_SHARED_LIBRARIES := libc libcutils libutils liblog
 ifeq ($(strip $(TARGET_USES_QCOM_WCNSS_QMI)),true)
-LOCAL_CFLAGS += -DWCNSS_QMI
+ifeq ($(TARGET_USES_WCNSS_MAC_ADDR_REV),true)
+LOCAL_CFLAGS += -DWCNSS_QMI_MAC_ADDR_REV
+endif
+LOCAL_CFLAGS += -DWCNSS_QMI -DMDM_DETECT
+LOCAL_HEADER_LIBRARIES += libmdmdetect_headers
 ifeq ($(filter 10% Q% q%,$(TARGET_PLATFORM_VERSION)),)
 #For Android R and above, assuming not compiling on Q and lower
 LOCAL_HEADER_LIBRARIES += libqmi_common_headers
